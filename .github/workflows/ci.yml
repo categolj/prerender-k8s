@@ -14,16 +14,19 @@ jobs:
       with:
         method: kubeconfig
         kubeconfig: ${{ secrets.KUBE_CONFIG }}
-    - name: install-k8s
+    - name: install-kapp
       run: |
         set -ex
-        wget -O- https://k14s.io/install.sh | bash    
+        wget -O kapp https://github.com/k14s/kapp/releases/download/v0.31.0/kapp-linux-amd64
+        install kapp /tmp/         
     - name: dry-run
       run: |
         set -ex
+        export PATH=${PATH}:/tmp
         ./deploy-prerender.sh --diff-run       
     - name: deploy-to-k8s
       if: github.ref == 'refs/heads/master'
       run: |
         set -ex
+        export PATH=${PATH}:/tmp
         ./deploy-prerender.sh -y
