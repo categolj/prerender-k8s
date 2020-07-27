@@ -18,3 +18,10 @@ spec:
       containers:
       - image: tvanro/prerender-alpine:6.1.0
         name: prerender
+        env:
+        - name: MEMORY_CACHE
+          value: "1"
+        - name: CACHE_MAXSIZE
+          value: "1000"
+        - name: CACHE_TTL
+          value: "6000"
