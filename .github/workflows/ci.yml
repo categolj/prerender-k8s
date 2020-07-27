@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+    - name: install-k8s
+      run: |
+        set -ex
+        wget -O- https://k14s.io/install.sh | bash    
+    - name: dry-run
+      run: |
+        set -ex
+        ./deploy-prerender.sh --diff-run       
+    - name: deploy-to-k8s
+      if: github.ref == 'refs/heads/master'
+      run: |
+        set -ex
+        ./deploy-prerender.sh -y
