@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prerender
+  name: prerender
+  namespace: prerender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prerender
+  template:
+    metadata:
+      labels:
+        app: prerender
+    spec:
+      containers:
+      - image: tvanro/prerender-alpine:6.1.0
+        name: prerender
