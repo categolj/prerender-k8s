@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2      
     - uses: azure/k8s-set-context@v1
       with:
         method: kubeconfig
@@ -20,14 +21,14 @@ jobs:
         wget -O kapp https://github.com/k14s/kapp/releases/download/v0.31.0/kapp-linux-amd64
         install kapp /tmp/         
     - name: dry-run
+      if: github.ref != 'refs/heads/master'
       run: |
         set -ex
         export PATH=${PATH}:/tmp
-        find /home/runner/work
-        /home/runner/work/deploy-prerender.sh --diff-run       
+        ./deploy-prerender.sh --diff-run       
     - name: deploy-to-k8s
       if: github.ref == 'refs/heads/master'
       run: |
         set -ex
         export PATH=${PATH}:/tmp
-        /home/runner/work/deploy-prerender.sh -y
+        ./deploy-prerender.sh -y
