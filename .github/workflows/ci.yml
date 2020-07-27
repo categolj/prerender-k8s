@@ -23,6 +23,8 @@ jobs:
       run: |
         set -ex
         export PATH=${PATH}:/tmp
+        la -la
+        find .
         $(dirname $0)/deploy-prerender.sh --diff-run       
     - name: deploy-to-k8s
       if: github.ref == 'refs/heads/master'
