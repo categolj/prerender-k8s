@@ -15,11 +15,9 @@ jobs:
       with:
         method: kubeconfig
         kubeconfig: ${{ secrets.KUBE_CONFIG }}
-    - name: install-kapp
-      run: |
-        set -ex
-        wget -O kapp https://github.com/k14s/kapp/releases/download/v0.31.0/kapp-linux-amd64
-        install kapp /tmp/         
+    - uses: k14s/setup-k14s-action@v1
+      with:
+        only: kapp    
     - name: dry-run
       if: github.ref != 'refs/heads/master'
       run: |
